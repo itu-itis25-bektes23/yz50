@@ -1,4 +1,6 @@
-def forward_pass
-  for range i
-    final = neuron(neruron i)
-return  final
+outputs []
+def forward_pass(inputs, weights, biases)
+  for range i in range(len(weights))
+    final = neuron (inputs, weights, biases)
+    outputs.append(final) //Listenin sonuna ekle.
+return  outputs
