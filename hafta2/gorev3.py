@@ -44,3 +44,17 @@ class Value:
         self.grad = 1.0
         for node in reversed(topo):
             node._backward()
+
+// Test degerlerini ekliyorum:
+
+a = Value(2.0)
+b = Value(-3.0)
+c = Value(10.0)
+f = Value(-2.0)
+
+e = a * b
+d = e + c
+L = d * f
+
+L.backward()
+print(a.grad, b.grad, c.grad, d.grad, e.grad, f.grad)
