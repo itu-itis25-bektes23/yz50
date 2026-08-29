@@ -7,5 +7,5 @@ class Value:
     def __add__(self, other):
       return Value(self.data + other.data, (self, other), '+')
     def __mul__(self, other):
-      return Value(self.data * other.data, (self, other), '+')
-a mul b add c
+      return Value(self.data * other.data, (self, other), '*')
+d = a * b + c
