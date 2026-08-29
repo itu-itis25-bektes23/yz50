@@ -5,4 +5,4 @@ class Value:
           self._prev = set(prev)
           self._op = op
     def __add__(self, other):
-        return Value( data  , op , prev )
+      return Value(<self + other>, (self, other), '+')
