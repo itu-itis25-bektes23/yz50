@@ -12,7 +12,7 @@ class Neuron:
         act = self.b
         for wi, xi in zip(self.w, x):
             act = act + wi*xi
-    return act.tanh()
+        return act.tanh()
 
-    def __parameters__(self):
-        return zip(self.w ,self.b)
+    def parameters(self): # Pyhtona ozgu metodlar icinmic cift _, __X__ 
+        return self.w +self.b
