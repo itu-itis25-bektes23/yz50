@@ -21,8 +21,8 @@ class Neuron:
 class Layer:
     def __init__(self, nin, nout):
       self.neurons = []
-      for i in range(nin):
-        self.w.append(Neuron(nout))
+      for i in range(nout):
+        self.neurons.append(Neuron(nin))
 
     def __call__(self, x):
         outs = []
@@ -31,6 +31,6 @@ class Layer:
         return outs[0] if len(outs) == 1 else outs
     def parameters(self):
         params = []
-        for n in self.neurons
+        for n in self.neurons:
             params.extend(n.parameters())
         return params
