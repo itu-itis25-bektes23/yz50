@@ -8,4 +8,13 @@
 
         return out
 
-  
+    def __pow__(self, k):
+        out = Value(self.data ** k, (self,), f'**{k}')
+
+        def _backward():
+            self.grad += k* x**(k-1) * out.grad    
+        out._backward = _backward
+
+        return out
+
+
