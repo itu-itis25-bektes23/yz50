@@ -14,3 +14,6 @@ b = Value(-3.0)
 c = Value(10.0)
 d = a * b + c
 print(d.data, d._op)
+
+    def __repr__(self):
+        return f"Value(data={self.data}, grad={self.grad})"
