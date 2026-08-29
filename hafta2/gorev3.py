@@ -71,3 +71,14 @@ L = d * f
 
 L.backward()
 print(a.grad, b.grad, c.grad, d.grad, e.grad, f.grad)
+
+
+x1 = Value(2.0);  x2 = Value(0.0)
+w1 = Value(-3.0); w2 = Value(1.0)
+b  = Value(6.8813735870195432)
+
+n = x1*w1 + x2*w2 + b
+o = n.tanh()
+o.backward()
+
+print(x1.grad, w1.grad, x2.grad, w2.grad)
