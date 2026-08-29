@@ -13,4 +13,6 @@ class Neuron:
         for wi, xi in zip(self.w, x):
             act = act + wi*xi
     return act.tanh()
-      
+
+    def __parameters__(self):
+        return zip(self.w ,self.b)
