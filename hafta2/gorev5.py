@@ -15,4 +15,4 @@ class Neuron:
         return act.tanh()
 
     def parameters(self): # Pyhtona ozgu metodlar icinmic cift _, __X__ 
-        return self.w +self.b
+        return self.w + [self.b]
