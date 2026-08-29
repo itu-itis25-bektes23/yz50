@@ -61,6 +61,7 @@ class Value:
 # Test degerlerini ekliyorum: // ile ekleyemiyormusuz.
  
 a = Value(2.0)
+b = Value(-3.0)
 c = Value(10.0)
 f = Value(-2.0)
 
@@ -74,9 +75,9 @@ print(a.grad, b.grad, c.grad, d.grad, e.grad, f.grad)
 
 x1 = Value(2.0);  x2 = Value(0.0)
 w1 = Value(-3.0); w2 = Value(1.0)
-b  = Value(6.8813735870195432)
+bias  = Value(6.8813735870195432)
 
-n = x1*w1 + x2*w2 + b
+n = x1*w1 + x2*w2 + bias
 o = n.tanh()
 o.backward()
 
