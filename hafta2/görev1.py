@@ -8,3 +8,4 @@ class Value:
       return Value(self.data + other.data, (self, other), '+')
     def __mul__(self, other):
       return Value(self.data * other.data, (self, other), '+')
+a mul b add c
