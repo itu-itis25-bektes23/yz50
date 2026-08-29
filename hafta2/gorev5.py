@@ -34,3 +34,10 @@ class Layer:
         for n in self.neurons:
             params.extend(n.parameters())
         return params
+
+class MLP:
+    def __init__(self, nin, nouts):
+        sz = [nin] + nouts
+        self.layers = []
+        for i in range(len(nouts)):
+            self.layers.append(Layer(sz[i], sz[i + 1]))
