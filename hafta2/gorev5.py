@@ -41,3 +41,8 @@ class MLP:
         self.layers = []
         for i in range(len(nouts)):
             self.layers.append(Layer(sz[i], sz[i + 1]))
+    def __call__(self, x):
+        for layer in self.layers:
+            x = layer(x)
+        return x
+
