@@ -129,3 +129,18 @@ c = Value(0.0)
 d = c.exp()
 d.backward()
 print(c.grad)      
+
+
+x = Value(0.8814)
+o1 = x.tanh()
+o1.backward()
+g1 = x.grad
+
+x = Value(0.8814)         
+e2 = (2*x).exp()
+o2 = (e2 - 1) / (e2 + 1)
+o2.backward()
+g2 = x.grad
+
+print(o1.data, o2.data)
+print(g1, g2)
