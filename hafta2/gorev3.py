@@ -58,10 +58,9 @@ class Value:
 
         return out
 
-// Test degerlerini ekliyorum:
-
+# Test degerlerini ekliyorum: // ile ekleyemiyormusuz.
+ 
 a = Value(2.0)
-b = Value(-3.0)
 c = Value(10.0)
 f = Value(-2.0)
 
