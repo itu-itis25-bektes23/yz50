@@ -17,4 +17,11 @@
 
         return out
 
+    def __truediv__(self, other):
+        return self * other ** -1
 
+    def __neg__(self):
+        return self * Value(-1.0)
+
+    def __sub__(self, other):
+        return self + (-other)
