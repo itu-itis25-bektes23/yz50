@@ -14,4 +14,3 @@ b = Value(-3.0)
 c = Value(10.0)
 d = a * b + c
 print(d.data, d._op)
-d = a * b + c
