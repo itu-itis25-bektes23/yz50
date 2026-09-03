@@ -1,1 +1,1 @@
-
+open(names.txt, r)
