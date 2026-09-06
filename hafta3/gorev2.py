@@ -33,4 +33,4 @@ plt.imshow(N, cmap='Blues')
 plt.axis('off')
 P = N.float()
 for i in range(27):
-  N[i, :] = P / P[i].sum(1, keepdim=True)
+   P[i]= P[i] / P[i].sum()
