@@ -39,7 +39,11 @@ P = P / P.sum(1, keepdim=True)
 
 g = torch.Generator().manual_seed(2147483647)
 torch.multinomial(dağılım, num_samples=1, replacement=True, generator=g)
-
+ix = 26
+list
+ix = P[ix]
+list.append(itos[ix])
+break if ix == 26
 for ix = 0 in range(26):
     list.append(zip(itos[P[ix]]))
 
