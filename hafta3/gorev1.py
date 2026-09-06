@@ -16,7 +16,7 @@ stoi['<E>'] = 27
 for w in words:
     chs = ['<S>'] + list(w) + ['<E>']
     for ch1, ch2 in zip(chs, chs[1:]):
-      bigram = (ch1, ch2)
-      b[bigram] = b.get(bigram, 0) + 1
+      bigram = (stoi(ch1), stoi(ch2))
+      b[bigram] += 1
 
 itos = {i:s for s,i in stoi.items() }
