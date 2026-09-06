@@ -14,7 +14,6 @@ stoi['.'] = 26
 #stoi['<S>'] = 26#
 ##stoi['<E>'] = 27##
 
-
 for w in words:
     chs = ['.'] + list(w) + ['.'] ##chs = ['<S>'] + list(w) + ['<E>']
     for ch1, ch2 in zip(chs, chs[1:]):
@@ -33,8 +32,8 @@ for w in words:
     for ch1, ch2 in zip(chs, chs[1:]):
       log_likelihood += torch.log(P[stoi[ch1], stoi[ch2]])
       n += 1
-print(avg_NLL =-log_likelihood / n)
-
+avg_NLL =-log_likelihood / n
+print(avg_NLL)
 
 g = torch.Generator().manual_seed(2147483647)
 
