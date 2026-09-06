@@ -32,5 +32,14 @@ for i in range(27): #28
 plt.imshow(N, cmap='Blues')
 plt.axis('off')
 P = N.float()
-for i in range(27):
-   P[i]= P[i] / P[i].sum()
+##for i in range(27):##
+   ##P[i]= P[i] / P[i].sum()##
+P = P / P.sum(1, keepdim=True)
+
+
+g = torch.Generator().manual_seed(2147483647)
+torch.multinomial(dağılım, num_samples=1, replacement=True, generator=g)
+
+for ix = 0 in range(26):
+    list.append(zip(itos[P[ix]]))
+
