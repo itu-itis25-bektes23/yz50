@@ -1,4 +1,4 @@
-words = open('names.txt', 'r').read().splitlines()
+words = open('isimler.txt', 'r').read().splitlines()
 words[:10]
 b = {}
 for w in words[:1]:
@@ -7,10 +7,10 @@ for w in words[:1]:
       bigram = (ch1, ch2)
       b[bigram] = b.get(bigram, 0) + 1
 import torch
-N = torch.zeros((len(stoi),len(stoi)) , dtype=torch.int32) #28#
 chars = sorted(list(set(''.join(words))))
 stoi = {s:i for i, s in enumerate(chars)}
-stoi['.'] = 26
+stoi['.'] = len(chars)
+N = torch.zeros((len(stoi),len(stoi)) , dtype=torch.int32) #28#
 #stoi['<S>'] = 26#
 ##stoi['<E>'] = len(stoi)##
 
@@ -39,15 +39,13 @@ g = torch.Generator().manual_seed(2147483647)
 
 for i in range(20):
     out = []
-    ix = 26
+    ix = stoi['.']
     while True:
         ix = torch.multinomial(P[ix], num_samples=1, replacement=True, generator=g).item()
         out.append(itos[ix])
-        if ix == 26:
+        if ix == stoi['.']:
             break
     print(''.join(out))
-
-
 
 xs = []
 ys = []
@@ -62,6 +60,8 @@ ys = torch.tensor(ys)
 num = xs.nelement()
 xenc = F.one_hot(xs, num_classes=len(stoi)).float()
 W = torch.randn((len(stoi),len(stoi)), generator=g, requires_grad=True)
+
+
 for k in range(100):
     logits = xenc @ W
     counts = logits.exp()
@@ -71,4 +71,16 @@ for k in range(100):
     loss.backward() 
     W.data += -50 * W.grad
 print(loss.item())
+
+
+for i in range(20):
+    out = []
+    ix = stoi['.']
+    while True:
+        ix = torch.multinomial(F.one_hot(torch.tensor([ix])@ W, num_classes=len(stoi)).float()).exp(), num_samples=1, replacement=True, generator=g).item()
+        out.append(itos[ix])
+        if ix == stoi['.']:
+            break
+    print(''.join(out))
+
 
