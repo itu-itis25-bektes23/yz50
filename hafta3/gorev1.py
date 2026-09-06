@@ -1,5 +1,4 @@
-words = open('names.txt', 'r').read.splitlines()
-words[:10]
+words = open('names.txt', 'r').read().splitlines()words[:10]
 
 for w in words[:1]
   chs = ['<S>'] + list(w) + ['<E>']
