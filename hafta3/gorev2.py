@@ -22,15 +22,7 @@ for w in words:
       N[stoi[ch1], stoi[ch2]] += 1
 
 itos = {i:s for s,i in stoi.items() }
-import matplotlib.pyplot as plt
-plt.figure(figsize=(16,16))
-for i in range(27): #28
-    for j in range(27): #28
-        plt.text(j , i + 0.25, N[i,j].item(), ha="center") 
-        plt.text(j, i, itos[i] + itos[j], ha="center") 
 
-plt.imshow(N, cmap='Blues')
-plt.axis('off')
 P = N.float()
 ##for i in range(27):##
    ##P[i]= P[i] / P[i].sum()##
