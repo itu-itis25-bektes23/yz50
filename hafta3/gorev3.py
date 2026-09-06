@@ -26,13 +26,14 @@ P = N.float()
    ##P[i]= P[i] / P[i].sum()##
 P = P / P.sum(1, keepdim=True)
 
-
+n = 0
+log_likelihood = 0
 for w in words:
     chs = ['.'] + list(w) + ['.']
     for ch1, ch2 in zip(chs, chs[1:]):
       log_likelihood += torch.log(P[stoi[ch1], stoi[ch2]])
       n += 1
-avg_NLL =-log_likelihood / n
+print(avg_NLL =-log_likelihood / n)
 
 
 g = torch.Generator().manual_seed(2147483647)
