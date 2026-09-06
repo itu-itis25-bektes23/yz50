@@ -19,29 +19,25 @@ stoi['.'] = 26
 for w in words:
     chs = ['.'] + list(w) + ['.'] ##chs = ['<S>'] + list(w) + ['<E>']
     for ch1, ch2 in zip(chs, chs[1:]):
-      N[stoi[ch1], stoi[ch2]] += 1
-
+      log_likelihood += torch.log(P[stoi[ch1], stoi[ch2]])
+      n++
+avg_NLL =-log_likelihood / n
 itos = {i:s for s,i in stoi.items() }
-import matplotlib.pyplot as plt
-plt.figure(figsize=(16,16))
-for i in range(27): #28
-    for j in range(27): #28
-        plt.text(j , i + 0.25, N[i,j].item(), ha="center") 
-        plt.text(j, i, itos[i] + itos[j], ha="center") 
 
-plt.imshow(N, cmap='Blues')
-plt.axis('off')
 P = N.float()
 ##for i in range(27):##
    ##P[i]= P[i] / P[i].sum()##
 P = P / P.sum(1, keepdim=True)
 
+g = torch.Generator().manual_seed(2147483647)
 
-out = []
-ix = 26
-while True:
-    ix = P[ix]
-    out.append(itos[ix])
-    if ix ==26
-        break
-print(''.join(out))
+for i in range(20):
+    out = []
+    ix = 26
+    while True:
+        ix = torch.multinomial(P[ix], num_samples=1, replacement=True, generator=g).item()
+        out.append(itos[ix])
+        if ix == 26:
+            break
+    print(''.join(out))
+
