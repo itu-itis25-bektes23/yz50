@@ -36,13 +36,13 @@ P = N.float()
    ##P[i]= P[i] / P[i].sum()##
 P = P / P.sum(1, keepdim=True)
 
-
+g = torch.Generator().manual_seed(2147483647)
 out = []
 ix = 26
 while True:
-    ix = P[ix]
+    ix = torch.multinomial(P[ix], num_samples=1, replacement=True, generator=g)
     out.append(itos[ix])
-    if ix ==26
+    if ix == 26:
         break
 print(''.join(out))
 
