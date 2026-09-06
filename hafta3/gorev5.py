@@ -77,9 +77,10 @@ for i in range(20):
     out = []
     ix = stoi['.']
     while True:
-        hot = (F.one_hot(torch.tensor([ix])
+        hot = F.one_hot(torch.tensor([ix])).float()
         logits = hot @ W
-        prob = logits.exp() / sum(1, keepdim=True)
+        le = logits.exp()
+        prob = le / le.sum(1, keepdim=True)
         ix = torch.multinomial(prob[0], num_samples=1, replacement=True, generator=g).item()        
         out.append(itos[ix])
         if ix == stoi['.']:
