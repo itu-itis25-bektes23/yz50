@@ -1,10 +1,11 @@
-words = open('names.txt', 'r').read().splitlines()words[:10]
-
+words = open('names.txt', 'r').read().splitlines()
+words[:10]
 for w in words[:1]:
-  chs = ['<S>'] + list(w) + ['<E>']
-  for ch1, ch2 in zip(chs, chs[1:]):
-    bigram = (ch1, ch2)
-    b[bigram] = b.get(bigram, 0) + 1
+    chs = ['<S>'] + list(w) + ['<E>']
+    b = {}
+    for ch1, ch2 in zip(chs, chs[1:]):
+      bigram = (ch1, ch2)
+      b[bigram] = b.get(bigram, 0) + 1
 import torch
 N = torch.zeros((28,28) , dtype=torch.int32)
 chars = sorted(list(set(''.join(words))))
