@@ -14,7 +14,7 @@ stoi['<S>'] = 26
 stoi['<E>'] = 27
 
 for w in words:
-    chs = ['<S>'] + list(w) + ['<E>']
+     chs = ['.'] + list(w) + ['.'] ##chs = ['<S>'] + list(w) + ['<E>']
     for ch1, ch2 in zip(chs, chs[1:]):
       N[stoi[ch1], stoi[ch2]] += 1
 
