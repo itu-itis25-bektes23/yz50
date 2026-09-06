@@ -77,7 +77,10 @@ for i in range(20):
     out = []
     ix = stoi['.']
     while True:
-        ix = torch.multinomial(F.one_hot(torch.tensor([ix])@ W, num_classes=len(stoi)).float()).exp(), num_samples=1, replacement=True, generator=g).item()
+        hot = (F.one_hot(torch.tensor([ix])
+        logits = hot @ W
+        prob = logits.exp() / sum(1, keepdim=True)
+        ix = torch.multinomial(prob[0], num_samples=1, replacement=True, generator=g).item()        
         out.append(itos[ix])
         if ix == stoi['.']:
             break
