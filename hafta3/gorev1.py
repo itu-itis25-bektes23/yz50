@@ -19,3 +19,7 @@ for w in words:
       N[stoi[ch1], stoi[ch2]] += 1
 
 itos = {i:s for s,i in stoi.items() }
+import matplotlib.pyplot as plt
+figure = plt.imshow(N)
+plt.figure(figsize=(16,16))
+plt.axis('off')
