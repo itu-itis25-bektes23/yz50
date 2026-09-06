@@ -77,7 +77,7 @@ for i in range(20):
     out = []
     ix = stoi['.']
     while True:
-        hot = F.one_hot(torch.tensor([ix])).float()
+        hot = F.one_hot(torch.tensor([ix]), num_classes=len(stoi)).float()
         logits = hot @ W
         le = logits.exp()
         prob = le / le.sum(1, keepdim=True)
