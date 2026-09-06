@@ -23,7 +23,7 @@ import matplotlib.pyplot as plt
 plt.figure(figsize=(16,16))
 for i in range(28):
     for j in range(28):
-        plt.text(j + 0.25, i, N[i,j].item(), ha="center") 
+        plt.text(j , i + 0.25, N[i,j].item(), ha="center") 
         plt.text(j, i, itos[i] + itos[j], ha="center") 
 
 plt.imshow(N, cmap='Blues')
