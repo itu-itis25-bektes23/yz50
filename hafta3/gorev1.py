@@ -21,10 +21,9 @@ for w in words:
 itos = {i:s for s,i in stoi.items() }
 import matplotlib.pyplot as plt
 plt.figure(figsize=(16,16))
-plt.imshow(N,itos[i] + itos[j])
-for i in 28
+for i in range(28):
     N[i,j].item()
-    for j in 28
+    for j in range(28):
         plt.text(j, i, itos[i] + itos[j])
-cmap='Blues'
+plt.imshow(N, cmap='Blues')
 plt.axis('off')
