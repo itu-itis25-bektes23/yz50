@@ -59,14 +59,16 @@ for w in words:
       ys.append(stoi[ch2])
 xs = torch.tensor(xs)
 ys = torch.tensor(ys)
+num = xs.nelement()
 F.one_hot(xs, num_classes=27).float()
 W = torch.randn((27,27), generator=g, requires_grad=True)
 logits = xenc @ W
 for k in range(100):
     counts = logits.exp()
-    num = xs.nelement()
     probs = counts / counts.sum(1, keepdim=True)
     loss = -probs[torch.arange(n), ys].log().mean()
     W.grad = None 
     loss.backward() 
     W.data += -50 * W.grad
+print(loss.item())
+
