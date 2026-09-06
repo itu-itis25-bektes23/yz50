@@ -22,7 +22,9 @@ itos = {i:s for s,i in stoi.items() }
 import matplotlib.pyplot as plt
 plt.figure(figsize=(16,16))
 plt.imshow(N,itos[i] + itos[j])
-plt.text(j, i, itos[i] + itos[j])
-N[i,j].item()
+for i in 28
+    N[i,j].item()
+    for j in 28
+        plt.text(j, i, itos[i] + itos[j])
 cmap='Blues'
 plt.axis('off')
