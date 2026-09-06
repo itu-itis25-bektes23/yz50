@@ -40,7 +40,7 @@ g = torch.Generator().manual_seed(2147483647)
 out = []
 ix = 26
 while True:
-    ix = torch.multinomial(P[ix], num_samples=1, replacement=True, generator=g)
+    ix = torch.multinomial(P[ix], num_samples=1, replacement=True, generator=g).item()
     out.append(itos[ix])
     if ix == 26:
         break
