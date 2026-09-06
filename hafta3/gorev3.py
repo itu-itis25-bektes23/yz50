@@ -20,7 +20,7 @@ for w in words:
       N[stoi[ch1], stoi[ch2]] += 1
 itos = {i:s for s,i in stoi.items() }
 
-P = (N+1).float() #Smoothing icin +1 eledik 0 log hesaplamaya kalkmasin diye#
+P = (N+1).float() #Smoothing icin +1 ekledik 0 log hesaplamaya kalkmasin diye Laplace smoothing dedi Copilot ilginc... #
 ##for i in range(27):##
    ##P[i]= P[i] / P[i].sum()##
 P = P / P.sum(1, keepdim=True)
