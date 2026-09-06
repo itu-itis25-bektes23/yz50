@@ -52,7 +52,6 @@ for i in range(20):
 xs = []
 ys = []
 import torch.nn.functional as F
-F.one_hot(xs, num_classes=27).float()
 for w in words:
     chs = ['.'] + list(w) + ['.']
     for ch1, ch2 in zip(chs, chs[1:]):
@@ -60,9 +59,14 @@ for w in words:
       ys.append(stoi[ch2])
 xs = torch.tensor(xs)
 ys = torch.tensor(ys)
+F.one_hot(xs, num_classes=27).float()
 W = torch.randn((27,27), generator=g, requires_grad=True)
 logits = xenc @ W
-counts = logits.exp()
-probs = counts / counts.sum(1, keepdim=True)
-neg_log_mean = -probs[torch.arange(n), ys].log.mean
-W.grad = None loss.backward() W.data += -50 * W.grad
+for k in range(100):
+    counts = logits.exp()
+    num = xs.nelement()
+    probs = counts / counts.sum(1, keepdim=True)
+    loss = -probs[torch.arange(n), ys].log().mean()
+    W.grad = None 
+    loss.backward() 
+    W.data += -50 * W.grad
