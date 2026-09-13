@@ -3,7 +3,7 @@ import torch
 import torch.nn.functional as F
 
 # --- veriyi oku ---
-words = read(notes.txt)  not = ''        # dosyadan satır satır, boşlukları temizle
+words = open('dosya.txt').read().splitlines()      # dosyadan satır satır, boşlukları temizle
 print(len(words), words[:5])
 
 # --- alfabe ---
@@ -18,7 +18,7 @@ block_size = 3
 
 X, Y = [], []
 for w in words:
-    context = [0] * blocksize
+    context = [0] * block_size
     for ch in w + '.':
         ix = stoi[ch]
         X.append(context)
