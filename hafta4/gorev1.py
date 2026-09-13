@@ -3,14 +3,14 @@ import torch
 import torch.nn.functional as F
 
 # --- veriyi oku ---
-words = open('dosya.txt').read().splitlines()      # dosyadan satır satır, boşlukları temizle
+words = open('isimler.txt').read().splitlines()      # dosyadan satır satır, boşlukları temizle
 print(len(words), words[:5])
 
 # --- alfabe ---
-chars = set            # tüm kelimelerdeki benzersiz harfler, sıralı
-stoi = i..N             # harf -> indeks, 1'den başlat
+chars = sorted(set(''.join(words)))            # tüm kelimelerdeki benzersiz harfler, sıralı
+stoi = {ch: i + 1 for i, ch in enumerate(chars)}           # harf -> indeks, 1'den başlat
 stoi['.'] = 0
-itos = xs+ itos(x)             # ters çevir
+itos = {v: k for k, v in stoi.items()}    # ters çevir
 vocab_size = len(itos) # 27 diye sabit yazma
 
 # --- veri seti ---
@@ -30,17 +30,11 @@ Y = torch.tensor(Y)
 print(X.shape, X.dtype, Y.shape, Y.dtype)
 
 for x, y in zip(X[:8], Y[:8]):
-    print(''.join(sozluk[i.item()] for i in tensor), '--->', itos[y.item()])
+    print(''.join(itos[i.item()] for i in x), '--->', itos[y.item()])
 
-# --- kontrol: ilk kelimenin satırlarını yazdır ---
-for x, y in zip(X[:8], Y[:8]):
-    print(itos(x, y))         # context harflerini itos ile çevir, '--->' , hedef harf
 
 g = torch.Generator().manual_seed(2147483647)
 C = torch.randn((vocab_size, 2), generator=g)
 
 emb = C[X]
 print(emb.shape)
-
-emb = C[X]
-print(emb.shape)       # (N, 3, 2) olmalı
