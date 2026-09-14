@@ -36,15 +36,16 @@ for x, y in zip(X[:8], Y[:8]):
 g = torch.Generator().manual_seed(2147483647)
 C = torch.randn((vocab_size, 2), generator=g)
 
+
+N = X[0]
 emb = C[X]
-emb = (N, 6)
+emb = tensor.reshape(N, 6)
 print(emb.shape)
 
-W1 = g
-b1 = g
-W2 = g
-b2 = g
-W_h = 100
+W1 = torch.randn(100, generator=g)
+b1 = torch.randn(100, generator=g)
+W2 = torch.randn(100, generator=g)
+b2 = torch.randn(100, generator=g)
 b_h = 100
-torch.tanh(W_h*x + b_h)
-F.cross_entropy(W_h, b_h) ?= -torch.log(probabilities)
+h = torch.tanh(W_h @ emb + b_h)
+torch.allclose(F.cross_entropy(logits, Y) , -torch.mean(torch.log(.sum(1, keepdim=True)torch.exp(probs[torch.arange(N), Y]))))
