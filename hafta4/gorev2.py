@@ -37,15 +37,18 @@ g = torch.Generator().manual_seed(2147483647)
 C = torch.randn((vocab_size, 2), generator=g)
 
 
-N = X[0]
+N = X.shape
 emb = C[X]
-emb = tensor.reshape(N, 6)
+emb = emb.reshape(N, 6)
 print(emb.shape)
 
-W1 = torch.randn(100, generator=g)
+W1 = torch.randn((6,100), generator=g)
 b1 = torch.randn(100, generator=g)
-W2 = torch.randn(100, generator=g)
-b2 = torch.randn(100, generator=g)
+W2 = torch.randn((100,vocabsize), generator=g)
+b2 = torch.randn(vocabsize, generator=g)
 b_h = 100
-h = torch.tanh(W_h @ emb + b_h)
-torch.allclose(F.cross_entropy(logits, Y) , -torch.mean(torch.log(.sum(1, keepdim=True)torch.exp(probs[torch.arange(N), Y]))))
+h = torch.tanh(emb @ W1 + b1)
+counts = torch.exp(probs[torch.arange(N), Y])
+probs = counts / Y.sum(1, keepdim=True)
+loss = -torch.log(torch.arange(N)) /counts
+F.cross_entropy(logits, Y) ?= loss
