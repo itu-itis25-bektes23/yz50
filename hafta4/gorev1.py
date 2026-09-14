@@ -3,7 +3,7 @@ import torch
 import torch.nn.functional as F
 
 # --- veriyi oku ---
-words = open('isimler.txt').read().splitlines()      # dosyadan satır satır, boşlukları temizle
+words = w.lower().strip() for w in open('isimler.txt').read().splitlines()      # dosyadan satır satır, boşlukları temizle
 print(len(words), words[:5])
 
 # --- alfabe ---
