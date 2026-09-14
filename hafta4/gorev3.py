@@ -57,3 +57,19 @@ counts = torch.exp(logits)
 probs = counts / counts.sum(1, keepdim=True)
 loss = -probs[torch.arange(N), Y].log().mean()
 print(torch.allclose(F.cross_entropy(logits, Y), loss))
+
+X_slice = X[1..32]
+Y_slice = Y[1..32]
+emb_slice = C[X_slice]
+emb_slice = emb.reshape(N, 6)
+print(emb.shape)
+
+h = torch.tanh(emb @ W1 + b1)
+logits = h @ W2 + b2
+
+loss = F.cross_entropy(logits, Y_slice)
+for elements i in parameters 
+  set p.grad = None
+loss.backward()
+for elements in parameters
+  p.data += -lr * p.grad
