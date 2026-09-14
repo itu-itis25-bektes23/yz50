@@ -47,8 +47,8 @@ b1 = torch.randn(100, generator=g)
 W2 = torch.randn((100,vocab_size), generator=g)
 b2 = torch.randn(vocab_size, generator=g)
 h = torch.tanh(emb @ W1 + b1)
-logirs = h @ W2 + b2
-counts = torch.exp(logits[torch.arange(N), Y])
+logits = h @ W2 + b2
+counts = torch.exp(logits)
 probs = counts / counts.sum(1, keepdim=True)
 loss = -probs[torch.arange(N), Y].log().mean()
-torch.allclose(F.cross_entropy(logits, Y), loss)
+print(torch.allclose(F.cross_entropy(logits, Y), loss))
