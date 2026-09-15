@@ -27,21 +27,24 @@ vocab_size = len(itos) # 27 diye sabit yazma
 block_size = 3
 
 def build_dataset(words):
-    X, Y = [], []
-    for w in words:
-      context = [0] * block_size
+  X, Y = [], []
+  for w in words:
+    context = [0] * block_size
     for ch in w + '.':
-        ix = stoi[ch]
-        X.append(context)
-        Y.append(ix)
-        context = context[1:] + [ix]
-    X = torch.tensor(X)
-    Y = torch.tensor(Y)
-    return X, Y
+      ix = stoi[ch]
+      X.append(context)
+      Y.append(ix)
+      context = context[1:] + [ix]
+  X = torch.tensor(X)
+  Y = torch.tensor(Y)
+  return X, Y
 Xtr, Ytr = build_dataset(words_tr)
 Xdev, Ydev = build_dataset(words_vl)
 Xte, Yte = build_dataset(words_te)
-print(X.shape, X.dtype, Y.shape, Y.dtype)
+
+print(Xtr.shape, Xtr.dtype, Ytr.shape, Ytr.dtype)
+print(Xdev.shape, Xdev.dtype, Ydev.shape, Ydev.dtype)
+print(Xte.shape, Xte.dtype, Yte.shape, Yte.dtype)
 
 for x, y in zip(Xtr[:8], Ytr[:8]):
     print(''.join(itos[i.item()] for i in x), '--->', itos[y.item()])
