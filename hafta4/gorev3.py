@@ -66,7 +66,7 @@ lri = []
 lossi = []
 for i in range(1000):
   lr = lrs[i]
-  ix = torch.randint(0, X.shape[0], (32,), generator=g)
+  ix = torch.randint(0, Xtr.shape[0], (32,), generator=g)
   X_slice = Xtr[ix]
   Y_slice = Ytr[ix]
   emb_slice = C[X_slice]
