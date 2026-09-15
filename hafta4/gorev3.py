@@ -11,7 +11,7 @@ random.shuffle(words)
 n1 = int(0.8 * len(words))
 n2 = int(0.9 * len(words))
 words_tr = words[:n1]
-words_vl = words[:n2]
+words_vl = words[n1:n2]
 words_te = words[n2:]
 # dosyadan satır satır, boşlukları temizle
 print(len(words), words[:5])
@@ -29,7 +29,7 @@ block_size = 3
 def build_dataset(words):
     X, Y = [], []
     for w in words:
-    context = [0] * block_size
+      context = [0] * block_size
     for ch in w + '.':
         ix = stoi[ch]
         X.append(context)
@@ -38,10 +38,12 @@ def build_dataset(words):
     X = torch.tensor(X)
     Y = torch.tensor(Y)
     return X, Y
-
+Xtr, Ytr = build_dataset(words_tr)
+Xdev, Ydev = build_dataset(words_vl)
+Xte, Yte = build_dataset(words_te)
 print(X.shape, X.dtype, Y.shape, Y.dtype)
 
-for x, y in zip(X[:8], Y[:8]):
+for x, y in zip(Xtr[:8], Ytr[:8]):
     print(''.join(itos[i.item()] for i in x), '--->', itos[y.item()])
 
 g = torch.Generator().manual_seed(2147483647)
@@ -62,8 +64,8 @@ lossi = []
 for i in range(1000):
   lr = lrs[i]
   ix = torch.randint(0, X.shape[0], (32,), generator=g)
-  X_slice = X[ix]
-  Y_slice = Y[ix]
+  X_slice = Xtr[ix]
+  Y_slice = Ytr[ix]
   emb_slice = C[X_slice]
   emb_slice = emb_slice.view(emb_slice.shape[0], -1)
   h = torch.tanh(emb_slice @ W1 + b1)
