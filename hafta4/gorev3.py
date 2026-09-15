@@ -2,13 +2,17 @@
 import torch
 import torch.nn.functional as F
 import matplotlib.pyplot as plt
+import random
 
 # --- veriyi oku ---
 words = open('names.txt').read().splitlines()  
-words = random.shuffle(words, random.seed(42)) 
-words_tr = words*0.8
-words_vl = words*0.1
-words_te = words*0.1
+random.seed(42)
+random.shuffle(words)
+n1 = int(0.8 * len(words))
+n2 = int(0.9 * len(words))
+words_tr = words[:n1]
+words_vl = words[:n2]
+words_te = words[n2:]
 # dosyadan satır satır, boşlukları temizle
 print(len(words), words[:5])
 
@@ -22,17 +26,19 @@ vocab_size = len(itos) # 27 diye sabit yazma
 # --- veri seti ---
 block_size = 3
 
-X, Y = [], []
-for w in words:
+def build_dataset(words):
+    X, Y = [], []
+    for w in words:
     context = [0] * block_size
     for ch in w + '.':
         ix = stoi[ch]
         X.append(context)
         Y.append(ix)
         context = context[1:] + [ix]
+    X = torch.tensor(X)
+    Y = torch.tensor(Y)
+    return X, Y
 
-X = torch.tensor(X)
-Y = torch.tensor(Y)
 print(X.shape, X.dtype, Y.shape, Y.dtype)
 
 for x, y in zip(X[:8], Y[:8]):
