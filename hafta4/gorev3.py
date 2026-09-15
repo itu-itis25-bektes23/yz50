@@ -32,15 +32,8 @@ print(X.shape, X.dtype, Y.shape, Y.dtype)
 for x, y in zip(X[:8], Y[:8]):
     print(''.join(itos[i.item()] for i in x), '--->', itos[y.item()])
 
-
 g = torch.Generator().manual_seed(2147483647)
 C = torch.randn((vocab_size, 2), generator=g)
-
-
-N = X.shape[0]
-emb = C[X]
-emb = emb.reshape(N, 6)
-print(emb.shape)
 
 W1 = torch.randn((6,100), generator=g)
 b1 = torch.randn(100, generator=g)
