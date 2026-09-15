@@ -85,12 +85,14 @@ for i in range(30000):
 plt.plot(lossi)
 plt.show()
 with torch.no_grad():
-emb_tr = ...          # C indexed by Xtr
-    flat_tr = ...         # .view(...)
-    h_tr = ...            # tanh
-    logits_tr = ...
+    emb_tr =  C[xtr]          # C indexed by Xtr
+    flat_tr = emb_slice.view(emb_tr.shape[0], -1)         # .view(...)
+    h_tr = torch.tanh(emb_tr @ W1 + b1)            # tanh
+    logits_tr = h_tr @ W2 + b2
     print('train', F.cross_entropy(logits_tr, Ytr).item())
 
-    emb_dev = ...         # same, with Xdev
-    ...
-    print('dev', F.cross_entropy(logits_dev, Ydev).item())
+emb_tr =  C[xdev]          # C indexed by Xtr
+flat_dev = emb_slice.view(emb_dev.shape[0], -1)         # .view(...)
+h_dev = torch.tanh(emb_dev @ W1 + b1)            # tanh
+logits_dev = h_dev @ W2 + b2
+print('dev', F.cross_entropy(logits_dev, Ydev).item())
