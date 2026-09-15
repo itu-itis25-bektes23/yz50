@@ -54,15 +54,15 @@ for p in parameters:
 lr = 0.1
 for i in range(100):
   X_slice = X[:32]
-Y_slice = Y[:32]
+  Y_slice = Y[:32]
   emb_slice = C[X_slice]
   emb_slice = emb_slice.view(emb_slice.shape[0], -1)
-  print(emb_slice.shape)
   h = torch.tanh(emb_slice @ W1 + b1)
   logits = h @ W2 + b2
   loss = F.cross_entropy(logits, Y_slice)
-  for p i in parameters:
-    set p.grad = None
+  for p in parameters:
+    p.grad = None
   loss.backward()
   for p in parameters:
     p.data += -lr * p.grad
+  print(i, loss.item())
