@@ -46,7 +46,7 @@ for p in parameters:
 
 lr = 0.1
 for i in range(10000):
-  ix = torch.randint(0, X.shape[0], 32, generator=g)
+  ix = torch.randint(0, X.shape[0], (32,), generator=g)
   X_slice = X[ix]
   Y_slice = Y[ix]
   emb_slice = C[X_slice]
@@ -59,4 +59,5 @@ for i in range(10000):
   loss.backward()
   for p in parameters:
     p.data += -lr * p.grad
-  print(i, loss.item())
+  if i % 1000 == 0:
+    print(i, loss.item())
