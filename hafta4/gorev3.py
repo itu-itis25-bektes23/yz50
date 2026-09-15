@@ -4,7 +4,12 @@ import torch.nn.functional as F
 import matplotlib.pyplot as plt
 
 # --- veriyi oku ---
-words = open('names.txt').read().splitlines()      # dosyadan satır satır, boşlukları temizle
+words = open('names.txt').read().splitlines()  
+words = random.shuffle(words, random.seed(42)) 
+words_tr = words*0.8
+words_vl = words*0.1
+words_te = words*0.1
+# dosyadan satır satır, boşlukları temizle
 print(len(words), words[:5])
 
 # --- alfabe ---
