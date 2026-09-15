@@ -45,11 +45,10 @@ for p in parameters:
     p.requires_grad = True
 
 lr = 0.1
-for i in range(100):
-  for i in range 32:
-    ix = torch.randint((0, X.shape[0]), 32)
-    X_slice = X[ix]
-    Y_slice = Y[ix]
+for i in range(10000):
+  ix = torch.randint(0, X.shape[0], 32, generator=g)
+  X_slice = X[ix]
+  Y_slice = Y[ix]
   emb_slice = C[X_slice]
   emb_slice = emb_slice.view(emb_slice.shape[0], -1)
   h = torch.tanh(emb_slice @ W1 + b1)
