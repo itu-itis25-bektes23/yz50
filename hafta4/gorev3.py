@@ -60,12 +60,11 @@ b2 = torch.randn(vocab_size, generator=g)
 parameters = [C, W1, b1, W2, b2]
 for p in parameters:
     p.requires_grad = True
-lre = torch.linspace(-3, 0, 1000)
-lrs = 10**lre
-lri = []
 lossi = []
-for i in range(1000):
-  lr = lrs[i]
+for i in range(30000):
+  lr = 0.1
+  if i > 20000:
+    lr = 0.01
   ix = torch.randint(0, Xtr.shape[0], (32,), generator=g)
   X_slice = Xtr[ix]
   Y_slice = Ytr[ix]
@@ -74,7 +73,6 @@ for i in range(1000):
   h = torch.tanh(emb_slice @ W1 + b1)
   logits = h @ W2 + b2
   loss = F.cross_entropy(logits, Y_slice)
-  lri.append(lre[i].item())
   lossi.append(loss.item())
   for p in parameters:
     p.grad = None
@@ -84,5 +82,15 @@ for i in range(1000):
   if i % 100 == 0:
     print(i, loss.item())
 
-plt.plot(lri, lossi)
+plt.plot(lossi)
 plt.show()
+with torch.no_grad():
+emb_tr = ...          # C indexed by Xtr
+    flat_tr = ...         # .view(...)
+    h_tr = ...            # tanh
+    logits_tr = ...
+    print('train', F.cross_entropy(logits_tr, Ytr).item())
+
+    emb_dev = ...         # same, with Xdev
+    ...
+    print('dev', F.cross_entropy(logits_dev, Ydev).item())
