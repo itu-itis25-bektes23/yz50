@@ -87,16 +87,16 @@ bnraw = bndiff * bnvar_inv
 hpreact = bngain * bnraw + bnbias
 ############CLUSTER3############################################################
 h = torch.tanh(hpreact)
-logits = h
-logits_maxes = logit.argmax(dim=1, keepdim=True).values
-bf = n / (n - 1)
-norm_logits = (logits_maxes - logit_maxes.mean())/(logit_maxes.std * bf)
+logits = h @ W2 + b2
+logits_maxes = logits.max(dim=1, keepdim=True).values
+norm_logits = logits - logits_maxes
 counts = torch.exp(norm_logits)
 counts_sum = counts.sum(dim=1, keepdim=True)
 counts_sum_inv = counts_sum**(-1)
-probs = counts_sum_inv
+probs = counts * counts_sum_inv
 logprobs = torch.log(probs)
-for i in range(n):
-  logprobs = logprobs[i, Yb].append()
+logprobs[range(n), Yb]
 loss = -logprobs.mean()
 
+if loss - F.cross_entropy(logits, Yb) > 1*e-6:
+  print("MATCHING")
