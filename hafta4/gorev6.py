@@ -62,11 +62,11 @@ C = torch.randn((vocab_size, n_emb), generator=g)
 gain = 5 / 3
 fan_in = block_size * n_emb
 W1 = torch.randn((fan_in,200), generator=g) * (gain / math.sqrt(fan_in))
-b1 = torch.randn(200, generator=g) * 0.01
-W2 = torch.randn((200,vocab_size), generator=g) * 0.01
+b1 = torch.zeros(200, generator=g) 
+W2 = torch.zeros((200,vocab_size), generator=g) 
 b2 = torch.zeros(vocab_size)
-bngain = torch.ones((1, 200))
-bnbias = torch.zeros((1, 200))
+bngain = torch.randn((1, 200)) * 0.01
+bnbias = torch.randn((1, 200)) * 0.01
 bnmean_running = torch.zeros((1, 200))
 bnstd_running =  torch.ones((1, 200))
 parameters = [C, W1, b1, W2, b2, bngain, bnbias]
