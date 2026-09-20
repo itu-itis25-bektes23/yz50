@@ -120,9 +120,16 @@ dlogprobs[range(n), Yb] = -1.0/n
 dprobs = (1.0 / probs) * dlogprobs
 dcounts_sum_inv = (counts * dprobs).sum(dim=1, keepdim=True)
 dcounts_sum = (-counts_sum ** -2) * dcounts_sum_inv
+
 cmp('logprobs', dlogprobs, logprobs)
 cmp('probs', dprobs, probs)
 cmp('counts_sum_inv ', dcounts_sum_inv, counts_sum_inv )
 cmp('counts_sum', dcounts_sum, counts_sum)
 
-
+###########FROMNOWONDEFINITIONANDCMPONEAFTEANOTHER############
+dcounts = counts_sum_inv * dprobs
+dcounts += torch.ones_like(counts) * dcounts_sum
+cmp('counts', dcounts, counts)
+dnorm_logits = counts * dcounts
+cmp('norm_logits', dnorm_logits, norm_logits)
+dlogit_maxes = -logit_maxes.sum(dim=1, keepdim=True)
