@@ -3,6 +3,7 @@ import torch
 import torch.nn.functional as F
 import matplotlib.pyplot as plt
 import random
+import math
 
 # --- veriyi oku ---
 words = open('names.txt').read().splitlines()  
@@ -49,21 +50,23 @@ print(Xte.shape, Xte.dtype, Yte.shape, Yte.dtype)
 for x, y in zip(Xtr[:8], Ytr[:8]):
     print(''.join(itos[i.item()] for i in x), '--->', itos[y.item()])
 
-n_emb = 2
+n_emb = 10
 
 g = torch.Generator().manual_seed(2147483647)
 C = torch.randn((vocab_size, n_emb), generator=g)
 
-W1 = torch.randn((block_size * n_emb,200), generator=g)
-b1 = torch.randn(200, generator=g)
-W2 = torch.randn((200,vocab_size), generator=g)
-b2 = torch.randn(vocab_size, generator=g)
+gain = 5 / 3
+fan_in = block_size * n_emb
+W1 = torch.randn((fan_in,200), generator=g) * (gain / math.sqrt(fan_in))
+b1 = torch.randn(200, generator=g) * 0.01
+W2 = torch.randn((200,vocab_size), generator=g) * 0.01
+b2 = torch.zeros(vocab_size)
 
 parameters = [C, W1, b1, W2, b2]
 for p in parameters:
     p.requires_grad = True
 lossi = []
-for i in range(30000):
+for i in range(1):
   lr = 0.1
   if i > 20000:
     lr = 0.01
