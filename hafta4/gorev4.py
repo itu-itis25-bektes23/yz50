@@ -50,11 +50,11 @@ for x, y in zip(Xtr[:8], Ytr[:8]):
     print(''.join(itos[i.item()] for i in x), '--->', itos[y.item()])
 
 g = torch.Generator().manual_seed(2147483647)
-C = torch.randn((vocab_size, 2), generator=g)
+C = torch.randn((vocab_size, (vocab_size, 10)), generator=g)
 
-W1 = torch.randn((6,100), generator=g)
-b1 = torch.randn(100, generator=g)
-W2 = torch.randn((100,vocab_size), generator=g)
+W1 = torch.randn((block_size * 10),200), generator=g)
+b1 = torch.randn(200, generator=g)
+W2 = torch.randn((200,vocab_size), generator=g)
 b2 = torch.randn(vocab_size, generator=g)
 
 parameters = [C, W1, b1, W2, b2]
