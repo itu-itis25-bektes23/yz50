@@ -71,17 +71,19 @@ parameters = [C, W1, b1, W2, b2, bngain, bnbias]
 for p in parameters: p.requires_grad = True
 ############CLUSTER1############################################################
 ix = torch.randint(0, Xtr.shape[0], (32,), generator=g)
-  Xb = Xtr[ix]
-  Yb = Ytr[ix]
-  emb = C[Xb]
-  embcat = emb.view(emb.shape[0], -1)
-  hprebn = embcat @ W1 + b1
-
-
+Xb = Xtr[ix]
+Yb = Ytr[ix]
+emb = C[Xb]
+embcat = emb.view(emb.shape[0], -1)
+hprebn = embcat @ W1 + b1
 ############CLUSTER2############################################################
-
-
-
+bnmeani = hprebn.mean(dim=0, keepdim=True)
+bndiff = hprebn - bnmeani
+bndiff2 = bndiff **2
+bnvar = bndiff2.sum(dim=0, keepdim=True) / (n - 1)
+bnvar_inv = (bnvar + 1e-5) ** -0.5
+bnraw = bndiff * bnvar_inv
+hpreact = bngain * bnvar_inv + bnbias
 ############CLUSTER3############################################################
 
 
