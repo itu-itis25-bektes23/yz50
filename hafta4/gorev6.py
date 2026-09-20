@@ -70,7 +70,8 @@ bnstd_running =  torch.ones((1, 200))
 parameters = [C, W1, b1, W2, b2, bngain, bnbias]
 for p in parameters: p.requires_grad = True
 ############CLUSTER1############################################################
-ix = torch.randint(0, Xtr.shape[0], (32,), generator=g)
+n = 32
+ix = torch.randint(0, Xtr.shape[0], (n,), generator=g)
 Xb = Xtr[ix]
 Yb = Ytr[ix]
 emb = C[Xb]
@@ -83,7 +84,19 @@ bndiff2 = bndiff **2
 bnvar = bndiff2.sum(dim=0, keepdim=True) / (n - 1)
 bnvar_inv = (bnvar + 1e-5) ** -0.5
 bnraw = bndiff * bnvar_inv
-hpreact = bngain * bnvar_inv + bnbias
+hpreact = bngain * bnraw + bnbias
 ############CLUSTER3############################################################
-
+h = torch.tanh(hpreact)
+logits = h
+logits_maxes = logit.argmax(dim=1, keepdim=True).values
+bf = n / (n - 1)
+norm_logits = (logits_maxes - logit_maxes.mean())/(logit_maxes.std * bf)
+counts = torch.exp(norm_logits)
+counts_sum = counts.sum(dim=1, keepdim=True)
+counts_sum_inv = counts_sum**(-1)
+probs = counts_sum_inv
+logprobs = torch.log(probs)
+for i in range(n):
+  logprobs = logprobs[i, Yb].append()
+loss = -logprobs.mean()
 
