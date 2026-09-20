@@ -115,4 +115,6 @@ tensors = [emb,embcat,h,logits,logit_maxes,norm_logits,counts,counts_sum,counts_
 for el in tensors:
   el.retain_grad()
 loss.backward()
-
+dlogprobs = torch.zeros(logprobs.grad.shape)
+dlogprobs[range(n), Yb] = -1.0/n
+cmp('logprobs', dlogprobs, logprobs)
