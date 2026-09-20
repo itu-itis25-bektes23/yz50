@@ -132,7 +132,7 @@ dcounts += torch.ones_like(counts) * dcounts_sum
 cmp('counts', dcounts, counts)
 dnorm_logits = counts * dcounts
 cmp('norm_logits', dnorm_logits, norm_logits)
-dlogit_maxes = -logit_maxes.sum(dim=1, keepdim=True)
+dlogit_maxes = -dnorm_logits.sum(dim=1, keepdim=True)
 cmp('logit_maxes', dlogit_maxes, logit_maxes)
 dlogits = dnorm_logits + F.one_hot(logits.max(1).indices, num_classes=logits.shape[1]) * dlogit_maxes
 cmp('logits', dlogits, logits)
