@@ -53,8 +53,6 @@ print(Xte.shape, Xte.dtype, Yte.shape, Yte.dtype)
 for x, y in zip(Xtr[:8], Ytr[:8]):
     print(''.join(itos[i.item()] for i in x), '--->', itos[y.item()])
 
-
-
 ############SETTINGS############################################################
 n_emb = 100
 g = torch.Generator().manual_seed(2147483647)
@@ -62,7 +60,7 @@ C = torch.randn((vocab_size, n_emb), generator=g)
 gain = 5 / 3
 fan_in = block_size * n_emb
 W1 = torch.randn((fan_in,200), generator=g) * (gain / math.sqrt(fan_in))
-b1 = torch.zeros(200) 
+b1 = torch.randn(200) * 0.01
 W2 = torch.randn((200,vocab_size), generator=g) * 0.01 
 b2 = torch.zeros(vocab_size)
 bngain = torch.randn((1, 200)) * 0.1 + 1
@@ -70,91 +68,20 @@ bnbias = torch.randn((1, 200)) * 0.01
 bnmean_running = torch.zeros((1, 200))
 bnstd_running =  torch.ones((1, 200))
 parameters = [C, W1, b1, W2, b2, bngain, bnbias]
-for p in parameters:
-    p.requires_grad = True
-lossi = []
+for p in parameters: p.requires_grad = True
+############CLUSTER1############################################################
+ix = torch.randint(0, Xtr.shape[0], (32,), generator=g)
+  X_b = X[ix]
+  Y_b = Y[ix]
+  emb = C[Xb]
+  embcat = emb.view(emb.shape[0], -1)
+  hprebn = emb @ W1 + b1
+
+
+############CLUSTER2############################################################
 
 
 
-######################### TRAINING #############################################
-for i in range(30000):
-  lr = 0.1
-  if i > 20000:
-    lr = 0.01
-  ix = torch.randint(0, Xtr.shape[0], (32,), generator=g)
-  X_slice = Xtr[ix]
-  Y_slice = Ytr[ix]
-  emb_slice = C[X_slice]
-  emb_slice = emb_slice.view(emb_slice.shape[0], -1)
-  hpreact = emb_slice @ W1 + b1
-  bnmeani = hpreact.mean(dim=0, keepdim=True)
-  bnstdi = hpreact.std(dim=0, keepdim=True)
-  hpreact = bngain * ((hpreact - bnmeani) / bnstdi) + bnbias
-  h = torch.tanh(hpreact)
-  logits = h @ W2 + b2
-  loss = F.cross_entropy(logits, Y_slice)
-  lossi.append(loss.item())
-  for p in parameters:
-    p.grad = None
-  loss.backward()
-  for p in parameters:
-    p.data += -lr * p.grad
-  if i % 100 == 0:
-    print(i, loss.item())
-  with torch.no_grad(): #########UPDATERUNNINGAVERAGEANDSTANDARDDERIVATION######
-    bnmean_running = 0.999 * bnmean_running + 0.001 * bnmeani
-    bnstd_running  = 0.999 * bnstd_running  + 0.001 * bnstdi
-
-#####################EVALUATING#################################################
-
-plt.plot(lossi)
-plt.show()
-with torch.no_grad():
-    emb_tr =  C[Xtr]          # C indexed by Xtr
-    flat_tr = emb_tr.view(emb_tr.shape[0], -1)         # .view(...)
-    hpreact_tr = flat_tr @ W1 + b1
-    hpreact_tr = bngain * ((hpreact_tr - bnmean_running) / bnstd_running) + bnbias
-    h_tr = torch.tanh(hpreact_tr)            # tanh
-    logits_tr = h_tr @ W2 + b2
-    print('train', F.cross_entropy(logits_tr, Ytr).item())
-
-    emb_dev =  C[Xdev]          # C indexed by Xdev
-    flat_dev = emb_dev.view(emb_dev.shape[0], -1)         # .view(...)
-    hpreact_dev = flat_dev @ W1 + b1
-    hpreact_dev = bngain * ((hpreact_dev - bnmean_running) / bnstd_running) + bnbias
-    h_dev = torch.tanh(hpreact_dev)            # tanh
-    logits_dev = h_dev @ W2 + b2
-    print('dev', F.cross_entropy(logits_dev, Ydev).item())
-plt.figure()
-for i in range(vocab_size):
-  plt.annotate(itos[i], (C.data[i,0], C.data[i,1]), ha='center', va='center')
-plt.scatter(C.data[:, 0], C.data[:, 1])
-plt.grid()
-plt.show()
+############CLUSTER3############################################################
 
 
-##############################SAMPLING##########################################
-with torch.no_grad():
-  names = 5
-  for name in range(names):
-    out = []
-    context = [0] * block_size
-    while True:
-      emb_c =  C[context]          # C indexed by Xtr
-      flat_c = emb_c.view(1, -1)
-      hpreact_c = flat_c @ W1 + b1
-      hpreact_c = bngain * ((hpreact_c - bnmean_running) / bnstd_running) + bnbias         # .view(...)
-      h_c = torch.tanh(hpreact_c)            # tanh
-      logits_c = h_c @ W2 + b2
-      probs_c = F.softmax(logits_c, dim=1)
-      ix = torch.multinomial(probs_c, num_samples=1, generator=g).item()
-      context = context[1:] + [ix]
-      out.append(ix)
-      if ix == 0: break
-    print(''.join(itos[i] for i in out))
-
-
-plt.hist(h.view(-1).tolist(), 50)
-plt.show()
-plt.imshow(h.abs()> 0.99, cmap='gray')
-plt.show()
