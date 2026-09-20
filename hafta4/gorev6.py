@@ -56,16 +56,16 @@ for x, y in zip(Xtr[:8], Ytr[:8]):
 
 
 ############SETTINGS############################################################
-n_emb = 100000
+n_emb = 100
 g = torch.Generator().manual_seed(2147483647)
 C = torch.randn((vocab_size, n_emb), generator=g)
 gain = 5 / 3
 fan_in = block_size * n_emb
 W1 = torch.randn((fan_in,200), generator=g) * (gain / math.sqrt(fan_in))
-b1 = torch.zeros(200, generator=g) 
-W2 = torch.zeros((200,vocab_size), generator=g) 
+b1 = torch.zeros(200) 
+W2 = torch.randn((200,vocab_size), generator=g) * 0.01 
 b2 = torch.zeros(vocab_size)
-bngain = torch.randn((1, 200)) * 0.01
+bngain = torch.randn((1, 200)) * 0.1 + 1
 bnbias = torch.randn((1, 200)) * 0.01
 bnmean_running = torch.zeros((1, 200))
 bnstd_running =  torch.ones((1, 200))
