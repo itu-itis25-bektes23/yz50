@@ -167,3 +167,22 @@ dbndiff += (2 * bndiff) * dbndiff2
 cmp('bnvar', dbnvar, bnvar)
 cmp('bndiff2', dbndiff2, bndiff2)
 cmp('bndiff', dbndiff, bndiff)
+###################
+dbnmeani = ((-1)* dbndiff).sum(dim=0, keepdim=True)
+cmp('bnmeani', dbnmeani, bnmeani)
+dhprebn = dbndiff
+dhprebn += (1.0/n) * torch.ones_like(hprebn) * dbnmeani
+cmp('hprebn', dhprebn, hprebn)
+##########
+dembcat = dhprebn @ torch.transpose(W1, 0,1)
+dW1 = torch.transpose(embcat,0,1) @ dhprebn
+db1 = dhprebn.sum(dim=0)
+
+cmp('embcat', dembcat, embcat)
+cmp('W1', dW1, W1)
+cmp('b1', db1, b1)
+############
+demb = 
+dC = 
+cmp('emb', demb, emb)
+cmp('C', dC, C)
