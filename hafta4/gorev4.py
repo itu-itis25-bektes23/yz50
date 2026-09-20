@@ -100,6 +100,6 @@ with torch.no_grad():
     print('dev', F.cross_entropy(logits_dev, Ydev).item())
 
 for i in range(vocab_size):
-  plt.annotate(itos[i], ha='center', va='center')
+  plt.annotate((C.data[i], C.data[i]),itos[i], ha='center', va='center')
   plt.scatter(C.data[0], C.data[1])
   plt.grid()
