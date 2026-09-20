@@ -123,7 +123,7 @@ with torch.no_grad():
     print(''.join(itos[i] for i in out))
 
 
-plt.hist(flat_c.view(-1).tolist(), 50)
-plt.figure()
-plt.imshow(h_c> 0.99, cmap'gray')
-plt.figure()
+plt.hist(h.view(-1).tolist(), 50)
+plt.show()
+plt.imshow(h.abs()> 0.99, cmap='gray')
+plt.show()
