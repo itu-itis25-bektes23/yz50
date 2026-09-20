@@ -146,3 +146,24 @@ cmp('h', dh, h)
 cmp('W2', dW2, W2)
 cmp('b2', db2, b2)
 cmp('hpreact', dhpreact, hpreact)
+
+####################
+dbngain = (bnraw * dhpreact).sum(dim=0, keepdim=True)
+dbnbias = dhpreact.sum(dim=0, keepdim=True)
+dbnraw = bngain * dhpreact
+dbnvar_inv = (bndiff * dbnraw).sum(dim=0, keepdim=True)
+dbndiff = bnvar_inv * dbnraw
+
+cmp('bngain', dbngain, bngain)
+cmp('bnbias', dbnbias, bnbias)
+cmp('bnraw', dbnraw, bnraw)
+cmp('bnvar_inv', dbnvar_inv, bnvar_inv)
+cmp('bndiff', dbndiff, bndiff)
+#################################
+dbnvar = (-0.5 * (bnvar + 1e-5)**-1.5) * dbnvar_inv
+dbndiff2 = (1.0/(n-1)) * torch.ones_like(bndiff2) * dbnvar
+dbndiff += (2 * bndiff) * dbndiff2
+
+cmp('bnvar', dbnvar, bnvar)
+cmp('bndiff2', dbndiff2, bndiff2)
+cmp('bndiff', dbndiff, bndiff)
