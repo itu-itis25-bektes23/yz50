@@ -98,8 +98,26 @@ with torch.no_grad():
     h_dev = torch.tanh(flat_dev @ W1 + b1)            # tanh
     logits_dev = h_dev @ W2 + b2
     print('dev', F.cross_entropy(logits_dev, Ydev).item())
-
+plt.figure()
 for i in range(vocab_size):
   plt.annotate(itos[i], (C.data[i,0], C.data[i,1]), ha='center', va='center')
 plt.scatter(C.data[:, 0], C.data[:, 1])
 plt.grid()
+plt.show()
+
+with torch.no_grad():
+  names = 5
+  for name in range(names):
+    out = []
+    context = [0] * block_size
+    while True:
+      emb_c =  C[context]          # C indexed by Xtr
+      flat_c = emb_c.view(1, -1)         # .view(...)
+      h_c = torch.tanh(flat_c @ W1 + b1)            # tanh
+      logits_c = h_c @ W2 + b2
+      probs_c = F.softmax(logits_c, dim=1)
+      ix = torch.multinomial(probs_c, num_samples=1, generator=g).item()
+      context = context[1:] + [ix]
+      out.append(ix)
+      if ix == 0: break
+    print(''.join(itos[i] for i in out))
