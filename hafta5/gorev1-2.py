@@ -137,8 +137,8 @@ cmp('logit_maxes', dlogit_maxes, logit_maxes)
 dlogits = dnorm_logits + F.one_hot(logits.max(1).indices, num_classes=logits.shape[1]) * dlogit_maxes
 cmp('logits', dlogits, logits)
 ###################
-dh = dlogits @ torch.transpose(W2)
-dW2 = torch.transpose(h) @ dlogits
+dh = dlogits @ torch.transpose(W2, 0,1)
+dW2 = torch.transpose(h,0,1) @ dlogits
 db2 = dlogits.sum(dim=0)
 dhpreact = dh * (1 -h**2)
 
