@@ -49,10 +49,12 @@ print(Xte.shape, Xte.dtype, Yte.shape, Yte.dtype)
 for x, y in zip(Xtr[:8], Ytr[:8]):
     print(''.join(itos[i.item()] for i in x), '--->', itos[y.item()])
 
-g = torch.Generator().manual_seed(2147483647)
-C = torch.randn((vocab_size, 10), generator=g)
+n_emb = 2
 
-W1 = torch.randn((block_size * 10,200), generator=g)
+g = torch.Generator().manual_seed(2147483647)
+C = torch.randn((vocab_size, n_emb), generator=g)
+
+W1 = torch.randn((block_size * n_emb,200), generator=g)
 b1 = torch.randn(200, generator=g)
 W2 = torch.randn((200,vocab_size), generator=g)
 b2 = torch.randn(vocab_size, generator=g)
@@ -96,3 +98,8 @@ with torch.no_grad():
     h_dev = torch.tanh(flat_dev @ W1 + b1)            # tanh
     logits_dev = h_dev @ W2 + b2
     print('dev', F.cross_entropy(logits_dev, Ydev).item())
+
+for i in range(vocab_size):
+  plt.annotate(itos[i], ha='center', va='center')
+  plt.scatter(C.data[0], C.data[1])
+  plt.grid()
