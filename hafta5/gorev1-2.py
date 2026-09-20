@@ -88,15 +88,31 @@ hpreact = bngain * bnraw + bnbias
 ############CLUSTER3############################################################
 h = torch.tanh(hpreact)
 logits = h @ W2 + b2
-logits_maxes = logits.max(dim=1, keepdim=True).values
-norm_logits = logits - logits_maxes
+logit_maxes = logits.max(dim=1, keepdim=True).values
+norm_logits = logits - logit_maxes
 counts = torch.exp(norm_logits)
 counts_sum = counts.sum(dim=1, keepdim=True)
 counts_sum_inv = counts_sum**(-1)
 probs = counts * counts_sum_inv
 logprobs = torch.log(probs)
-logprobs[range(n), Yb]
-loss = -logprobs.mean()
+loss = -logprobs[range(n), Yb].mean()
 
-if loss - F.cross_entropy(logits, Yb) > 1*e-6:
+if (loss - F.cross_entropy(logits, Yb)).abs() < 1e-6:
   print("MATCHING")
+
+###############KOPYA####################################
+# utility function we will use later when comparing manual gradients to PyTorch gradients
+def cmp(s, dt, t):
+  ex = torch.all(dt == t.grad).item()
+  app = torch.allclose(dt, t.grad)
+  maxdiff = (dt - t.grad).abs().max().item()
+  print(f'{s:15s} | exact: {str(ex):5s} | approximate: {str(app):5s} | maxdiff: {maxdiff}')
+###############KOPYA####################################
+
+for p in parameters:
+  p.grad = None 
+tensors = [emb,embcat,h,logits,logit_maxes,norm_logits,counts,counts_sum,counts_sum_inv, logprobs, probs, hpreact, bnraw, bnvar_inv, bnvar, bndiff2, bndiff, bnmeani, hprebn]
+for el in tensors:
+  el.retain_grad()
+loss.backward()
+
