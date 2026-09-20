@@ -136,4 +136,13 @@ dlogit_maxes = -dnorm_logits.sum(dim=1, keepdim=True)
 cmp('logit_maxes', dlogit_maxes, logit_maxes)
 dlogits = dnorm_logits + F.one_hot(logits.max(1).indices, num_classes=logits.shape[1]) * dlogit_maxes
 cmp('logits', dlogits, logits)
+###################
+dh = dlogits * W2
+dW2 = h * dlogits
+db2 = b2.sum(dim=0)
+dhpreact = 1 -h**2
 
+cmp('h', dh, h)
+cmp('W2', dW2, W2)
+cmp('b2', db2, b2)
+cmp('hpreact', dhpreact, hpreact)
