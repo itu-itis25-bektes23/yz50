@@ -117,4 +117,6 @@ for el in tensors:
 loss.backward()
 dlogprobs = torch.zeros(logprobs.grad.shape)
 dlogprobs[range(n), Yb] = -1.0/n
+dprobs = (1.0 / probs) * dlogprobs
 cmp('logprobs', dlogprobs, logprobs)
+cmp('probs', dprobs, probs)
