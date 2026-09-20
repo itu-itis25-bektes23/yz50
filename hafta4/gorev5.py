@@ -121,3 +121,9 @@ with torch.no_grad():
       out.append(ix)
       if ix == 0: break
     print(''.join(itos[i] for i in out))
+
+
+plt.hist(flat_c.view(-1).tolist(), 50)
+plt.figure()
+plt.imshow(h_c> 0.99, cmap'gray')
+plt.figure()
